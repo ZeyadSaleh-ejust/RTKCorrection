@@ -1,6 +1,11 @@
 from enum import Enum
+from ..controllers.BaseController import BaseController
+from ...helpers.config import get_settings
 
 class DataFilesPath(Enum):
-    ROVER_NAVIGATION_PARAMETERS = r"F:\zizo\RTKCorrection\data\navigation\RoverStationNav.nav"
-    INPUT_PREPROCESSED = r"F:\zizo\RTKCorrection\data\input_preprocesed.csv"
-    ROVER_FULL_NAVIGATION_PARAMETERS_CSV = r"F:\zizo\RTKCorrection\data\navigation\preprocessed\ROVER_FullNavigation_parameters.csv"
+# Base directory for better maintainability
+    BASE_DIR = get_settings().PROJECT_DIR
+
+    ROVER_NAVIGATION_PARAMETERS = f"{BASE_DIR}/data/navigation/RoverStationNav.nav"
+    INPUT_PREPROCESSED = f"{BASE_DIR}/data/input_preprocesed.csv"
+    ROVER_FULL_NAVIGATION_PARAMETERS_CSV = f"{BASE_DIR}/data/navigation/preprocessed/ROVER_FullNavigation_parameters.csv"

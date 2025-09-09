@@ -2,7 +2,6 @@ import csv
 from datetime import datetime
 import os
 from ..constants.DataFilesPath import DataFilesPath
-#from ..constants.DataFilesPath import DataFilesPath
 
 def navToCSV(input_file: str, output_file: str):
     """
@@ -10,7 +9,6 @@ def navToCSV(input_file: str, output_file: str):
     """
     # --- Processing ---
     data_rows = []
-
     with open(input_file, "r") as f:
         lines = f.readlines()
 
