@@ -138,14 +138,15 @@ class NavigationCorrection:
         # apply TGD separately when correcting pseudorange if needed.
         return dt_sv
 
-    def find_best_nav_record(self, nav_records: List[Dict], obs_time: float, max_time_diff: float = 7200) -> Optional[Dict]:
+    def find_best_nav_record(self, nav_records: List[Dict], obs_time: float, 
+                            max_time_diff: float = 7200) -> Optional[Dict]:
         """
         Find the best navigation record for a given observation time
         
         Args:
             nav_records: List of navigation records for a satellite
             obs_time: Observation time in GPS seconds of week
-            max_time_diff: Maximum allowed time difference between observation and nav record (seconds)
+            max_time_diff: Maximum allowed time difference (default: 4 hours = 14400s)
             
         Returns:
             Best matching navigation record or None if none found within time tolerance
@@ -155,13 +156,25 @@ class NavigationCorrection:
         
         for record in nav_records:
             t_oc = record['toc (s)']
+            
+            # Calculate time difference with week wrapping
+            t_oc = t_oc % 86400
             time_diff = abs(obs_time - t_oc)
             
-            if time_diff < min_time_diff and time_diff <= max_time_diff:
-                min_time_diff = time_diff
+            # Handle GPS week boundary crossing  
+            time_diff1 = min(time_diff, self.HALF_WEEK - time_diff)
+            #print(time_diff1," <---> ",time_diff)
+            if time_diff1 < min_time_diff and time_diff1 <= max_time_diff:
+                min_time_diff = time_diff1
                 best_record = record
+            #print(f"Warning: Using nav data with {min_time_diff/3600:.1f}h age")
+        
+        # Optional: Log warning if time difference is large
+        if best_record and min_time_diff > 7200:  # > 2 hours
+            print(f"Warning: Using nav data with {min_time_diff/3600:.1f}h age")
         
         return best_record
+
 
     def apply_clock_correction_to_observations(self, obs_csv_path: str, nav_data: Dict[str, List[Dict]]) -> pd.DataFrame:
         """
@@ -184,17 +197,18 @@ class NavigationCorrection:
         obs_df['nav_time_diff'] = np.nan
         
         # Process each observation
-            
+        zoz = 5
         for idx, row in obs_df.iterrows():
             # Convert SatelliteID float -> int -> str
-            sat_id = str(int(row['SatelliteID']))
+            sat_id = int(row['SatelliteID'])
             obs_time = row['GPST_seconds']
 
             if sat_id not in nav_data:
+                print(f"sat_id: {sat_id}, nav_data keys: {list(nav_data.keys())}")
                 continue  # Skip if no nav data
-
+            
             nav_record = self.find_best_nav_record(nav_data[sat_id], obs_time)        
-                    
+            
             if nav_record is None:
                 continue  # Skip if no suitable navigation record found
                 
