@@ -30,6 +30,7 @@ async def upload_data(request: Request, project_id: str,file: UploadFile,
     
     nav_data = navigation_correction.parse_nav_data(output_NAV_file)
     corrected_obs_df = navigation_correction.apply_clock_correction_to_observations(DataFilesPath.INPUT_PREPROCESSED.value,nav_data)
+    print(type(corrected_obs_df))
 
     corrected_obs_df.to_csv('corrected_observations.csv', index=False)
         
