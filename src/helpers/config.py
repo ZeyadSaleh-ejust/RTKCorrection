@@ -10,7 +10,8 @@ class Settings(BaseSettings):
     FILE_MAX_SIZE: int
     FILE_DEFAULT_CHUNK_SIZE: int
 
-
+    POSTGRESQL_URL: str
+    POSTGRESQL_DATABASE: str
 
     class Config:
         env_file = ".env"
