@@ -32,6 +32,6 @@ async def upload_data(request: Request, project_id: str,file: UploadFile,
     corrected_obs_df = navigation_correction.apply_clock_correction_to_observations(DataFilesPath.INPUT_PREPROCESSED.value,nav_data)
     print(type(corrected_obs_df))
 
-    corrected_obs_df.to_csv('corrected_observations.csv', index=False)
+    corrected_obs_df.to_csv('observation_navigation_correction.csv', index=False)
         
     return corrected_obs_df    
