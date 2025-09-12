@@ -1,6 +1,5 @@
 import csv
-from datetime import datetime
-import os
+import pandas as pd
 from ..constants.DataFilesPath import DataFilesPath
 
 def navToCSV(input_file: str, output_file: str):
@@ -37,8 +36,8 @@ def navToCSV(input_file: str, output_file: str):
         minute = int(line1[18:20].strip())
         second = float(line1[21:23].strip())
 
-        epoch_datetime = datetime(year, month, day, hour, minute, int(second))
-        epoch_str = epoch_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        epoch_timestamp = pd.Timestamp(year=year, month=month, day=day, 
+                                      hour=hour, minute=minute, second=int(second))
 
         clock_bias = float(line1[23:42].strip())
         clock_drift = float(line1[42:61].strip())
@@ -93,7 +92,7 @@ def navToCSV(input_file: str, output_file: str):
 
         # Collect all fields
         data_rows.append([
-            gnss_type, prn_number, epoch_str,
+            gnss_type, prn_number, epoch_timestamp,
             clock_bias, clock_drift, clock_drift_rate,
             IODE, Crs, delta_n, M0,
             Cuc, e, Cus, sqrtA,

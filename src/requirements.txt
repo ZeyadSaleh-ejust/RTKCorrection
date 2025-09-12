@@ -12,3 +12,4 @@ aiofiles==23.2.1
 georinex>=1.0.0
 xarray>=0.19.0
 asyncpg==0.30.0
+StringIO
