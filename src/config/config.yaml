@@ -1,0 +1,21 @@
+source_root: "src"
+
+data:
+  navigation_data:
+    root: "data/navigation/"
+    postprocessed: "data/navigation/PostProcessed/"
+    raw: "data/navigation/Raw/"
+
+  observation_data:
+    root: "data/observation"
+    postprocessed: "data/observation/PostProcessed/"
+    raw: "data/observation/Raw/
+
+  positioning_data:
+    root: "data/positioning/"
+    postprocessed: "data/positioning/PostProcessed/"
+    raw: "data/positioning/Raw/
+
+  observation_navigation_correction_data:
+    root: "data/observation_navigation_correction/"
+
