@@ -1,12 +1,20 @@
 import pandas as pd
 from datetime import datetime
+from ..RinexInterface import RinexInterface
 
-class rinex_V3_02:
-    def parse_rinex_obs(self, filename, constellation: str = None):
+
+class Rinex_V3_02(RinexInterface):
+    def __init__(self, filename: str):
+        super().__init__(filename)
+
+    # -----------------------------
+    # Generic parser for any constellation
+    # -----------------------------
+    def _parse_constellation(self, constellation: str) -> pd.DataFrame:
         records = []
         obs_types = {}  # Store constellation -> list of obs codes
 
-        with open(filename, "r") as f:
+        with open(self.filename, "r") as f:
             lines = f.readlines()
 
         # Step 1: Parse header to extract observation types
@@ -77,8 +85,32 @@ class rinex_V3_02:
         df = pd.DataFrame(records, columns=["Time_seconds", "SatelliteID"] + columns)
         return df
 
+    # -----------------------------
+    # Specific constellation wrappers
+    # -----------------------------
+    def GPS(self):      # "G"
+        return self._parse_constellation("G")
+
+    def Galileo(self):  # "E"
+        return self._parse_constellation("E")
+
+    def GLONASS(self):  # "R"
+        return self._parse_constellation("R")
+
+    def BeiDou(self):   # "C"
+        return self._parse_constellation("C")
+
+    def NavIC(self):    # "I"
+        return self._parse_constellation("I")
+
+    def QZSS(self):     # "J"
+        return self._parse_constellation("J")
+    
+    def SBAS(self):
+        return self._parse_constellation("s")
 
 
+"""
 if __name__=="__main__":
     filename = r"C:\Users\User\Desktop\rinex_out\20240214-041908.obs"
     rinex = rinex_V3_02()
@@ -87,4 +119,4 @@ if __name__=="__main__":
     # Save as tab-delimited file
     df.to_csv("test_RTK1.txt", sep="\t", index=False)
 
-    print(df.head())
+    print(df.head())"""
