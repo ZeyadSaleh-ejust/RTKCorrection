@@ -1,8 +1,5 @@
 import pandas as pd
 from datetime import datetime
-import pandas as pd
-from datetime import datetime
-import math
 
 class rinex_V3_02:
     def parse_rinex_obs(self, filename, constellation: str = None):
@@ -12,9 +9,7 @@ class rinex_V3_02:
         with open(filename, "r") as f:
             lines = f.readlines()
 
-        # -----------------------
-        # Step 1: Parse header
-        # -----------------------
+        # Step 1: Parse header to extract observation types
         start_idx = 0
         for i, line in enumerate(lines):
             if "SYS / # / OBS TYPES" in line:
@@ -37,14 +32,10 @@ class rinex_V3_02:
         if constellation not in obs_types:
             raise ValueError(f"Constellation {constellation} not found in RINEX header")
 
-        # Get obs column names for requested constellation
+        # Get the observation columns for requested constellation
         columns = obs_types[constellation]
-        num_obs = len(columns)
-        lines_per_sat = math.ceil(num_obs / 5)  # 5 obs per line max (80 chars)
 
-        # -----------------------
         # Step 2: Parse body
-        # -----------------------
         i = start_idx
         current_time = None
 
@@ -61,33 +52,16 @@ class rinex_V3_02:
                 i += 1
                 continue
 
-            # If line starts with the requested constellation
-            # If line starts with the requested constellation
+            # Observation lines for the selected constellation
             if line.startswith(constellation):
                 sat_id = int(line[1:3])
 
-                sat_values = []
-                # Read all lines for this satellite, but stop if file ends early
-                for k in range(lines_per_sat):
-                    if i + k >= len(lines):
-                        break  # avoid IndexError at file end
-
-                    sat_line = lines[i + k]
-
-                    # Each line (after sat id) holds up to 5 obs, each 16 chars
-                    start = 3 if k == 0 else 0  # skip constellation+id only on first line
-                    for j in range(0, 80, 16):
-                        val = sat_line[start + j:start + j + 16].strip()
-                        if val:
-                            try:
-                                sat_values.append(float(val))
-                            except ValueError:
-                                sat_values.append(None)
-                        else:
-                            sat_values.append(None)
-
-                # Trim to expected num_obs (in case of missing/extra fields)
-                sat_values = sat_values[:num_obs]
+                values = []
+                for j in range(len(columns)):
+                    start = 3 + j * 16
+                    end = start + 16
+                    val = line[start:end].strip()
+                    values.append(float(val) if val else None)
 
                 time_seconds = (
                     current_time.hour * 3600
@@ -95,20 +69,14 @@ class rinex_V3_02:
                     + current_time.second
                 )
 
-                records.append([time_seconds, sat_id] + sat_values)
-
-                # Skip all lines we consumed for this satellite
-                i += lines_per_sat
-                continue
-
+                records.append([time_seconds, sat_id] + values)
 
             i += 1
 
-        # -----------------------
-        # Step 3: Create DataFrame
-        # -----------------------
+        # Step 3: Create DataFrame dynamically
         df = pd.DataFrame(records, columns=["Time_seconds", "SatelliteID"] + columns)
         return df
+
 
 
 if __name__=="__main__":
