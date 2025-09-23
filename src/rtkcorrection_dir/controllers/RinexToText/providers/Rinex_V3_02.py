@@ -83,7 +83,7 @@ class Rinex_V3_02(RinexInterface):
 
         # Step 3: Create DataFrame dynamically
         df = pd.DataFrame(records, columns=["Time_seconds", "SatelliteID"] + columns)
-        return df
+        df.to_csv(f"Rinex_To_Text_Constellation_{constellation}.txt", sep="\t", index=False)
 
     # -----------------------------
     # Specific constellation wrappers
