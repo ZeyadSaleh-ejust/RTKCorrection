@@ -197,7 +197,7 @@ class Convbin:
         except Exception as e:
             print(f"Error checking convbin version: {e}")
 
-"""
+
 # Example usage
 if __name__ == "__main__":
     convbin_path = r"C:\Users\User\Desktop\softwares\RTKLIB_bin-rtklib_2.4.3\RTKLIB_bin-rtklib_2.4.3\bin\convbin.exe"
@@ -209,10 +209,10 @@ if __name__ == "__main__":
     # Perform conversion (UBX → RINEX 3.02, GPS + GLONASS)
     files = convbin_exe.raw_to_rinex(
         input_file=r"C:\Users\User\Desktop\softwares\RTKLIB_bin-rtklib_2.4.3\RTKLIB_bin-rtklib_2.4.3\bin\20240214-041908.UBX",
-        output_dir=r"rinex_out_test",
+        output_dir=r"C:\Users\User\Desktop\rinex_out",
         convbin_path=convbin_path,
         rinex_version="3.02",
         input_format="ubx",
-        constellations=["GPS","GLO","QZS"]  # Test with multiple constellations
+        constellations=["GPS","GLO"]  # Test with multiple constellations
     )
-    print("Generated files:", [f.name for f in files])"""
+    print("Generated files:", [f.name for f in files])

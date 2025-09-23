@@ -229,7 +229,7 @@ class NavigationCorrection:
             # Apply correction to carrier phase (add phase correction)
             # Phase correction in cycles = dt_sv * frequency
             f_l1 = 1575.42e6  # L1 frequency in Hz
-            phase_correction = dt_sv * f_l1
+            phase_correction = dt_sv * f_l1                 ############### edited ********************
             obs_df.at[idx, 'L1C_corrected'] = row['L1C'] + phase_correction
             
             # Record that correction was applied
