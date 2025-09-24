@@ -1,4 +1,4 @@
-from RinexEnums import RinexEnum,RinexConstellations
+from RinexEnums import RinexConstellations
 from providers.Rinex_V3_02 import Rinex_V3_02
 
 class RinexFactory:
