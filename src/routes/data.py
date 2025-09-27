@@ -45,7 +45,7 @@ async def upload_data(request: Request, project_id: str,file: UploadFile,
     
 
 
-
+"""
 @data_router.post("/savingDB/{table_name}")
 async def saving_db(
     request: Request,
@@ -96,3 +96,4 @@ async def saving_db(
             status_code=500,
             content={"error": str(e)}
         )
+"""
