@@ -39,9 +39,18 @@ class Convbin:
             "SBS": "S"
         }
 
+        # Supported GNSS signals/frequencies
+        self.SUPPORTED_SIGNALS = {
+            "L1": "1",
+            "L2": "2",
+            "L3": "3",
+            "L4": "4",
+            "L5": "5"
+        }
+
     def raw_to_rinex(self, input_file: str, output_dir: str, convbin_path: str,
                      rinex_version: str = "3.02", input_format: str = "ubx",
-                     constellations: list[str] = None):
+                     constellations: list[str] = None, signals: list[str] = None):
         """
         Convert GNSS binary file to RINEX using convbin from RTKLIB 2.4.3+
         """
@@ -72,6 +81,18 @@ class Convbin:
             constellation_flags = "".join(self.SUPPORTED_CONSTELLATIONS[c] for c in constellations)
             print(f"Constellation flags: '{constellation_flags}'")  # DEBUG
 
+        # --- Validate signals ---
+        signal_flags = ""
+        if signals:
+            invalid = [s for s in signals if s not in self.SUPPORTED_SIGNALS]
+            if invalid:
+                raise ValueError(
+                    f"Invalid signals: {', '.join(invalid)}. "
+                    f"Supported: {', '.join(self.SUPPORTED_SIGNALS.keys())}"
+                )
+            signal_flags = "".join(self.SUPPORTED_SIGNALS[s] for s in signals)
+            print(f"Signal flags: '{signal_flags}'")  # DEBUG
+
         input_path = Path(input_file).resolve()
         out_dir = Path(output_dir).resolve()
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -89,6 +110,10 @@ class Convbin:
         # Add constellation filter if specified
         if constellation_flags:
             cmd += ["-y", constellation_flags]
+            
+        # Add signal/frequency filter if specified
+        if signal_flags:
+            cmd += ["-f", signal_flags]
 
         print("Running:", " ".join(cmd))
         
@@ -213,6 +238,7 @@ if __name__ == "__main__":
         convbin_path=convbin_path,
         rinex_version="3.02",
         input_format="ubx",
-        constellations=["GPS","GLO"]  # Test with multiple constellations
+        constellations=["GPS","GLO"],  # Test with multiple constellations
+        signals=["L1", "L2", "L5"]    # Test with multiple signals
     )
     print("Generated files:", [f.name for f in files])
