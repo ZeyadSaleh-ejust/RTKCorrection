@@ -206,6 +206,7 @@ __marimo__/
 # Data 
 data/
 research/research_data/
+research/analysis_outputs/
 
 # Softwares
 softwares/
