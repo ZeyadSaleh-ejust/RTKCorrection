@@ -225,7 +225,7 @@ class Convbin:
 
 # Example usage
 if __name__ == "__main__":
-    convbin_path = r"C:\Users\User\Desktop\softwares\RTKLIB_bin-rtklib_2.4.3\RTKLIB_bin-rtklib_2.4.3\bin\convbin.exe"
+    convbin_path = r"C:\Users\User\OneDrive\Desktop\softwares\RTKLIB_bin-rtklib_2.4.3\RTKLIB_bin-rtklib_2.4.3\bin\convbin.exe"
     convbin_exe = Convbin()
 
     # First check convbin version
@@ -233,12 +233,12 @@ if __name__ == "__main__":
     
     # Perform conversion (UBX → RINEX 3.02, GPS + GLONASS)
     files = convbin_exe.raw_to_rinex(
-        input_file=r"C:\Users\User\Desktop\Base\KTM13440.23_\KTM13440.23_.sbf",
-        output_dir=r"C:\Users\User\Desktop\new_rinex_out\Vehicle Track 10 Dec\base",
+        input_file=r"C:\Users\User\OneDrive\Desktop\Base\KTM13440.23_\KTM13440.23_.sbf",
+        output_dir=r"C:\Users\User\OneDrive\Desktop\new_rinex_out\Vehicle Track 10 Dec\base",
         convbin_path=convbin_path,
         rinex_version="3.02",
         input_format="sbf",
-        constellations=["GPS"],  # Test with multiple constellations
+        constellations=["GPS","GLO"],  # Test with multiple constellations
         signals=["L1", "L2", "L5"]    # Test with multiple signals
     )
     print("Generated files:", [f.name for f in files])
