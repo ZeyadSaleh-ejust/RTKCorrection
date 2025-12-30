@@ -1,0 +1,31 @@
+ORIGINAL FEATURES:
+==================================================
+  - avg_snr
+  - min_snr
+  - max_residual
+  - x_x
+  - y_x
+  - z_x
+  - ns
+  - sdx(m)
+  - sdy(m)
+  - sdz(m)
+
+ENGINEERED FEATURES:
+==================================================
+  - snr_range
+  - snr_quality_ratio
+  - snr_consistency
+  - residual_per_sat
+  - residual_snr_ratio
+  - residual_quality
+  - total_uncertainty
+  - horizontal_uncertainty
+  - vertical_horizontal_ratio
+  - uncertainty_per_sat
+  - sat_geometry_quality
+  - quality_score
+  - anomaly_risk_score
+  - position_diff_magnitude
+  - horizontal_diff
+  - position_consistency
