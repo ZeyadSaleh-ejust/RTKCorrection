@@ -1,0 +1,456 @@
+% Version 2022-09-20
+% update – 161114 by Ken Arroyo Ohori: made spacing closer to Word template throughout, put proper quotes everywhere, removed spacing that could cause labels to be wrong, added non-breaking and inter-sentence spacing where applicable, removed explicit newlines
+% update – 010819 by Dennis Wittich: made spacing and font size closer to Word template, updated references and refernces style
+% update – 042319 by Dennis Wittich: font size of captions set to 'small', first author names are shortened, hyphenation fixed
+% update – 010620 by Dennis Wittich: Footnotes alignment set to left
+% update - 151220 by Clement Mallet: Template adapted for double blind full paper submissions
+% update - 060321 by Christian Heipke: Template refined for double blind full paper submissions
+% update - 090921 by Christian Heipke: Template refined for double blind full paper submissions
+% update - 200922 by Christian Heipke: general template update
+% update - 080124 by Christian Heipke: general template update
+
+\documentclass{isprs} % isprs class modified 23-04-2019 (Dennis Wittich)
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{geometry} % added 27-02-2014 Markus Englich
+\usepackage{epstopdf}
+\usepackage[labelsep=period]{caption}  % added 14-04-2016 Markus Englich - Recommendation by Sebastian Brocks
+\usepackage[british]{babel} 
+\usepackage[hang]{footmisc}
+\usepackage[utf8]{inputenc}
+\usepackage{textgreek}
+\usepackage{multirow}
+\usepackage{amsmath} 
+\usepackage{float}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref} % For clickable \ref links
+\def\footnotemargin{1em} % added 08-01-2020 Dennis Wittich
+
+%\usepackage[authoryear]{natbib}
+%\def\bibhang{0pt}
+
+\geometry{a4paper, top=25mm, left=20mm, right=20mm, bottom=25mm, headsep=10mm, footskip=12mm} % added 27-02-2014 Markus Englich
+
+%\usepackage{enumitem}
+
+%\usepackage{isprs}
+%\usepackage[perpage,para,symbol*]{footmisc}
+
+%\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\captionsetup{justification=centering,font=normal} % thanks to Niclas Borlin 05-05-2016
+\captionsetup[figure]{font=small} % added 23-04-2019 Dennis Wittich
+\captionsetup[table]{font=small} % added 23-04-2019 Dennis Wittich
+
+\begin{document}
+
+\title{	AI-Driven Virtual Reference Station: Enhancing Low-Cost GNSS Accuracy Using Kinematic RTK Modeling}
+\date{}
+
+
+% KAO: Remove extra spacing
+
+% Anonymous submissions, authors' names should not be visible
+\author{
+Zeyad Saleh\textsuperscript{1}, Ayman R. Elgamal\textsuperscript{1}, Abdullah Zaky\textsuperscript{1}, Yoeel Dawod\textsuperscript{1}, Zain Ali\textsuperscript{1}, Ganna M. Elsayed\textsuperscript{1},\\
+Reda Elbasiony\textsuperscript{2}, Moheb Yacoub\textsuperscript{3}, Ayman Mahrous\textsuperscript{4,5}
+}
+
+
+
+% KAO: Remove extra newline
+% Anonymous submissions, authors' affiliations should not be visible
+\address{
+    \textsuperscript{1}Egypt-Japan University of Science and Technology (E-JUST), Department of Computer Science, Egypt\\
+    \hspace{1em} Email: zeyad.youssef@ejust.edu.eg, ayman.elgamal@ejust.edu.eg, abdullah.zaky@ejust.edu.eg,\\
+    \hspace{1em} yoel.dawod@ejust.edu.eg, zain.ali@ejust.edu.eg, ganna.elsayed@ejust.edu.eg\\
+    
+    \textsuperscript{2}Associate Professor, Egypt-Japan University of Science and Technology (E-JUST), Egypt\\
+    \hspace{1em} Email: reda.elbasiony@ejust.edu.eg\\
+
+    \textsuperscript{3}Doctoral Researcher at the University of Oulu, Finland\\
+    \hspace{1em} Email: moheb.tawadrous@oulu.fi\\
+    
+    \textsuperscript{4}Department of Space Environment, Institute of Basic and Applied Sciences, Egypt-Japan University of Science and Technology (E-JUST)\\
+    \textsuperscript{5}Department of Physics, Faculty of Science, Helwan University, Helwan 11795, Cairo, Egypt.\\
+    \hspace{1em} Email: ayman.mahrous@ejust.edu.eg\\
+
+}
+%\address{**** (for review, affiliations must be rendered anonymous)}
+
+% If the corresponding author is NOT the final author, always add a % space before the subsequent comma, i.e.
+% first author name\textsuperscript{a,}\thanks{Corresponding author} , % second author name \textsuperscript{b}, etc.
+% thanks to Niclas Borlin 05-05-2016
+% information on the corresponding author should not be used any longer and has been commented out
+% C. Heipke, Jan 03,2024
+
+% the use of the information of commissions and working groups should not be used any longer and has been commented out
+% C. Heipke, Sept. 20,2022
+%\commission{XX, }{YY} %This field is optional. If filled, XX and YY should be replaced by adequate numbers. See https://www2.isprs.org/commissions/
+%\workinggroup{XX/YY} %This field is optional.
+%\icwg{}   %This field is optional.
+
+
+% KAO: Use times symbol
+\abstract{
+Achieving near-meter-level accuracy with low-cost Global Navigation Satellite System (GNSS) receivers remains a significant challenge for enabling precision applications such as automated construction, precision agriculture, UAV navigation, and maritime operations. Traditional Real-Time Kinematic (RTK) positioning requires a fixed, high-cost reference station, which inherently limits both accessibility and scalability for low-cost rover receivers. This work introduces an AI-driven Virtual Reference Station (VRS) framework that leverages processed GNSS data from low-cost receivers without requiring physical reference stations during deployment. The proposed model is trained using kinematic positions derived from a reference station but operates independently, thereby reducing deployment costs while maintaining high positioning accuracy. The methodology is demonstrated and validated using the Chinese BeiDou constellation. Single Point Positioning (SPP) with ionospheric correction is employed as the preprocessing step for BeiDou GNSS rover observations to generate input features. The corresponding output data are obtained using RTKPost in kinematic positioning mode, corrected by a reference base station. Multiple machine learning models—including Random Forest, XGBoost, LightGBM, Artificial Neural Networks, and Hybrid Ensemble approaches—are trained to predict residual 3D positional errors (Δx, Δy, Δz) between SPP and RTK-derived positions. The Random Forest model achieves the highest performance, significantly improving SPP positioning accuracy from an average error of \textbf{15 m} to approximately \textbf{1.15 m}, representing a \textbf{92.29\%} enhancement. These results demonstrate that the proposed AI-based correction approach effectively bridges the gap between single-point and kinematic positioning, providing near-RTK accuracy without the need for expensive physical reference stations.
+}
+
+\keywords{Global Navigation Satellite System (GNSS), Real-Time Kinematic positioning (RTK), Machine Learning, Hybrid Ensemble Model, BeiDou constellation, Single Point Positioning (SPP).}
+
+\maketitle
+
+
+\section{Introduction}\label{INTRODUCTINO}
+\label{sec:introduction}
+% KAO: Sloppy spacing ensures non-overfull lines. Can be removed if this is not an issue.
+\sloppy
+
+Modern intelligent systems need accurate and reliable positioning for efficient operation. Increasingly, applications such as automated construction, precision agriculture, drone navigation, and maritime operations require centimeter-level positioning accuracy to function effectively. In automated construction, GNSS directs heavy machinery like excavators, graders, and bulldozers where to go, so they can follow digital design models with centimeter-level accuracy. This automation minimizes human error, reduces up projects. GNSS (\hyperref[KaplanHegarty]{Kaplan and Hegarty,2017}) helps farmers do site-specific tasks like planting, fertilizing, and harvesting with high spatial accuracy in precision agriculture. This uses fewer resources and gets the most crops. GNSS gives unmanned aerial vehicles (UAVs) real-time navigation and positioning data that is necessary for autonomous flight, aerial mapping, infrastructure inspection, and delivery missions. This is because the centimeter-level accuracy ensures that the georeferencing and flight stability are accurate. GNSS supports vessel navigation, offshore surveying, and traffic management in maritime operations. It improves safety and operational efficiency by providing continuous, high-accuracy positioning. The Global Navigation Satellite System (GNSS), including China's BeiDou(\hyperref[Yang2019]{Yang, 2019}), the United States' Global Positioning System (GPS)(\hyperref[TeunissenMontenbruck]{P.J.G. Teunissen and O. Montenbruck, 2007}), Europe's Galileo(\hyperref[SteigenbergerPeter]{Steigenberger and Peter, 2014}) and Russia's GLONASS(\hyperref[RevnivykhSergey]{Revnivykh and Sergey, 2017}), provides global coverage for determining precise locations anywhere on Earth. But even though GNSS receivers are widely available and important, getting high positioning accuracy with low-cost GNSS receivers  is still a major challenge.\\
+Standard low-cost GNSS receivers, which often appear in consumer devices, can usually achieve positional accuracies of a few meters under ideal circumstances. However, signal multipath, atmospheric delays, and hardware limitations can cause the accuracy to significantly decrease in dynamic or obstructed environments, like urban or coastal areas. High-precision methods like Real-Time Kinematic (RTK)(\hyperref[BisnathSunil]{Bisnath and Sunil, 2020}) positioning have been developed to overcome these errors. Specifically, RTK uses carrier-phase measurements from a fixed, reliable reference station and a rover (the moving receiver) to provide centimeter-level accuracy. By sending real-time correction data, the reference station enables the rover to remove common errors between the two receivers.\\
+RTK positioning performs very well, but it has some significant issues because it needs a fixed reference station. Deploying and maintaining these kinds of stations requires a lot of infrastructure, high-quality antennas, and stable communication links. This makes the solution expensive and hard to scale, especially for wide-area or low-budget uses. Due to these costs, RTK technology is limited to use in certain fields or areas that already have reference networks. As a result, reaching RTK-level accuracy with low-cost receivers that don't need physical reference stations is still a significant research challenge in the GNSS community.In areas such as rural, expressway, and suburban settings, SPP generally achieves reliable positioning due to favorable satellite signal conditions. However, in more challenging environments like semiurban, urban, and forested regions, SPP performance is often hindered by issues such as suboptimal multipath mitigation, reduced carrier-to-noise density ratio (C/N0), and frequent signal outages, as illustrated in ~\ref{fig:Signals}
+.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/Picture1.jpg}
+    \caption{The urban positioning environment of SPP with NLOS and multipath (adapted from \hyperref[Wu2024]{Wu et al., 2024}). © 2024 Wu et al., reproduced with permission.}
+    \label{fig:Signals}
+\end{figure}
+
+
+
+
+
+(\hyperref[kanhere2022]{Kanhere et al., 2022}) utilized a Set Transformer-based neural network to address the issue of variable satellite input in GNSS location correction. Practical experiments showed that this system cut down on average positioning mistakes by almost 83\%, going from 36.4 m with traditional WLS to 6.2 m with their deep learning method. (\hyperref[sbeity2023]{Sbeity et al., 2023}) developed a recurrent neural network architecture utilizing LSTM networks to assess the quality of per-link measurements for instantaneous placement.
+The resultant weighting mechanism demonstrated significant enhancements in both horizontal and vertical positioning accuracy, achieving approximately 35\% improvements relative to other leading methodologies. (\hyperref[mohanty2024]{Mohanty and Gao, 2024}) conducted a thorough analysis of machine learning architectures for GNSS improvement, looking at CNN, RNN, and Transformer variants. They found that these architectures improved accuracy by 20–30\% in dense urban environments. However, the survey identified critical limitations, particularly regarding data dependency and the generalization capabilities of trained models. In order to deal with time-varying urban environments, (\hyperref[tang2024]{Tang et al., 2024}) developed a Deep Reinforcement Learning technique that incorporates LSTM and Policy Proximal Optimization with adaptive reward augmentation. Experiments showed a positioning accuracy improvement of about 10\% over the current machine learning and traditional baselines.\\
+(\hyperref[weng2023]{Weng et al., 2023}) introduced \textit{PrNet}, a neural network that corrects biased pseudorange errors from Android smartphone GNSS measurements. Their satellite-wise MLP, trained on selected satellite and receiver features, reduced horizontal positioning errors by up to 74\%, achieving an average accuracy of 4.09~m when integrated with an RTS smoother. (\hyperref[kabir2023]{Kabir et al., 2023}) developed \textit{PC-DeepNet}, a permutation-invariant deep neural network designed to estimate GNSS position corrections under dynamic satellite visibility. Using features such as $\mathrm{C}/\mathrm{N}_0$, elevation angle, GDOP, and pseudorange residuals, their model achieved a 7.77~m horizontal accuracy—outperforming WLS and Kalman Filter baselines while maintaining low computational cost.(\hyperref[pan2023]{Pan et al., 2023}) proposed a machine learning approach for modeling multipath errors in the spatial domain using azimuth and elevation parameters. Among the tested algorithms—Random Forest, XGBoost, and MLP—the XGBoost model performed best, reducing residuals by up to 36.2\% and improving kinematic precision by 20\% horizontally and 17\% vertically compared to uncorrected results. (\hyperref[stopar2024]{Stopar et al., 2024}) conducted a review of low-cost GNSS receivers, assessing their observation quality and positioning performance. The study found that while low-cost receivers can achieve sub-centimeter accuracy in open-sky RTK and sub-decimeter accuracy with PPP-RTK, performance drops significantly in urban environments due to multipath interference, signal blockage, and vulnerability to spoofing and jamming.
+
+The main contributions of this work can be summarized as follows:
+\begin{itemize}
+    \item Propose an \textbf{AI-driven Virtual Reference Station (VRS) }framework that achieves near-RTK accuracy using only low-cost GNSS observations.
+    \item The proposed \textbf{Random Forest Regressor} model effectively reduced the mean Euclidean error from \textbf{15 m} to \textbf{1.276 m}.
+    \item Achieved a \textbf{91.49\%} improvement in positioning accuracy when utilizing the \textbf{BeiDou} \item An \textbf{Anomaly Detection} algorithm is applied to remove outlier signals caused by multipath or NLOS effects.
+\end{itemize}
+
+\section{Data}
+
+\subsection{Data Collection}
+For this study, we gathered a set of GNSS data on February 14, 2024, during a three-hour window from 04:00 to 07:00 GPST. The field setup employed a dual-receiver configuration specifically tracking the BeiDou Navigation Satellite System.  This approach was designed to produce parallel SPP and RTK solutions, which serve as the foundational training data for our proposed AI-driven Virtual Reference Station framework.
+
+\subsubsection{Rover Station: }
+The mobile component consisted of a u-blox receiver. This unit recorded dual-frequency BeiDou observations from 04:19:28 GPST (week 2301, 274768.0 s) through 06:32:24 GPST (week 2301, 282744.0 s). By logging data at a 1-second interval, this process yielded a total of 7,976 epochs of kinematic data for analysis.
+
+\subsubsection{Base Station: }
+We utilized the KTM1 reference station, physically located in Kathmandu, Nepal. This station operates with a Septentrio POLARX5 receiver (S/N: 3022814, firmware 5.5.0), and its established ECEF coordinates are X = 459308.2203 m, Y = 5634072.7408 m, and Z = 2946975.4851 m. While this station supplied the necessary differential corrections for the training phase, it is important to note that it is not a required component for the model's final deployment.
+
+\subsection{Data Specifications: }
+The observation data was formatted in RINEX 3.04 files. These files detailed ten distinct BeiDou observation types spread across five key frequencies: B1I (C1P, L1P), B2a (C5P, L5P), B1I (C2I, L2I), B2I (C7I, L7I), and B3I (C6I, L6I). Separately, navigation data in the RINEX 3.02 format provided the broadcast ephemeris.
+
+
+\section{Methodology}\label{sec:Methodology}
+This study proposes an AI-driven Virtual Reference Station (VRS) framework to achieve near-meter-level positioning accuracy using low-cost GNSS receivers without requiring physical reference stations during deployment. The methodology employs a quantitative machine learning approach, utilizing processed BeiDou GNSS data from low-cost rovers to train predictive models that correct Single Point Positioning (SPP) errors to approximate Real-Time Kinematic (RTK) accuracy. The framework consists of two main stages: (1) GNSS data preprocessing and feature extraction, (2) machine learning model training and testing.
+
+
+\subsection{GNSS data preprocessing and feature extraction}
+The raw GNSS data were initially converted into observation and navigation files using \textbf{convbin.exe}, a utility provided in the RTKLIB software package. Subsequently, Single Point Positioning (SPP) processing was conducted using the RTKPost software (RTKLIB ver. 2.4.3).(\hyperref[Takasu2020]{Takasu and RTKLIB contributors, 2020}) with the rover’s observation and navigation files. In this stage, an iterative weighted least squares estimation (LSE) was employed to determine the receiver position and clock bias based on pseudorange measurements.
+
+Following this, Real-Time Kinematic (RTK) processing was performed using the rover’s observation and navigation files along with the base station observation file. The RTK positions were computed through carrier-phase-based kinematic positioning, implemented in the RTKPost software. The RTK positioning process utilized an Extended Kalman Filter (EKF) to estimate the rover receiver’s position using double-differenced (DD) carrier-phase and pseudorange observations from both the rover and base station receivers.
+In Figure \ref{fig:preprocessing} is the complete data pre-processing and feature extraction workflow.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/1st_workflow.png}
+    \caption{Data pre-processing and feature extraction workflow.}
+    \label{fig:preprocessing}
+\end{figure}
+
+
+\subsubsection{Single Point Positioning (SPP)\\}
+SPP determines the rover receiver position \(\mathbf{r}_r = [x_r, y_r, z_r]^T\) in ECEF coordinates and receiver clock bias \(c\delta t_r\) using pseudorange measurements. The pseudorange observation equation for satellite \(i\) is:
+
+\begin{equation}
+P_i = \rho_i + c\delta t_r - c\delta T_i + I_i + T_i + \epsilon_i
+\end{equation}
+
+where \(\rho_i = \|\mathbf{r}^s_i - \mathbf{r}_r\|\) is the geometric range to satellite \(i\), \(\delta T_i\) is the satellite clock bias, \(I_i\) and \(T_i\) are ionospheric and tropospheric delays, and \(\epsilon_i\) is the measurement noise.
+
+The position solution is obtained through iterative weighted least squares:
+
+\begin{equation}
+\mathbf{x}_{k+1} = \mathbf{x}_k + (\mathbf{H}^T\mathbf{W}\mathbf{H})^{-1}\mathbf{H}^T\mathbf{W}(\mathbf{y} - \mathbf{h}(\mathbf{x}_k))
+\end{equation}
+
+where \(\mathbf{x} = [\mathbf{r}_r^T, c\delta t_r]^T\) is the state vector, \(\mathbf{H}\) is the design matrix containing line-of-sight unit vectors, \(\mathbf{W}\) is the elevation-dependent weight matrix, \(\mathbf{y}\) is the pseudorange measurement vector, and \(\mathbf{h}(\mathbf{x}_k)\) is the predicted measurement vector.
+
+SPP processing was performed using RTKPost with BeiDou-only observations (L1+L2 frequencies), 10° elevation mask, estimated TEC ionospheric correction, and broadcast ephemeris. The solution converged within 3–5 iterations, yielding ECEF coordinates \((x_r, y_r, z_r)\) for each epoch.
+
+
+
+\subsubsection{Real-Time Kinematic (RTK) Positioning}
+
+RTK determines the rover receiver position \(\mathbf{r}_r = [x_r, y_r, z_r]^T\) using double-differenced (DD) carrier-phase and pseudorange observations between rover and base station receivers. For short baseline processing ($<$ 10 km), the DD measurement equations are:
+
+\begin{equation}
+\Phi_{rb}^{jk,i} = \rho_{rb}^{jk} + \lambda_i B_{rb}^{jk,i} - I_{rb}^{jk,i} + T_{rb}^{jk}
+\end{equation}
+
+\begin{equation}
+P_{rb}^{jk,i} = \rho_{rb}^{jk} + I_{rb}^{jk,i} + T_{rb}^{jk}
+\end{equation}
+
+where \(\Phi_{rb}^{jk,i}\) and \(P_{rb}^{jk,i}\) are DD carrier-phase and pseudorange observations, \(\rho_{rb}^{jk}\) is the DD geometric range, \(\lambda_i\) is the carrier wavelength, \(B_{rb}^{jk,i}\) is the DD integer ambiguity, and \(I_{rb}^{jk,i}\) and \(T_{rb}^{jk}\) are DD ionospheric and tropospheric delays. Position and ambiguity estimation employs an Extended Kalman Filter (EKF) with measurement update:
+
+\begin{equation}
+\mathbf{x}_k^+ = \mathbf{x}_k^- + \mathbf{K}_k(\mathbf{y}_k - \mathbf{h}(\mathbf{x}_k^-))
+\end{equation}
+
+where \(\mathbf{x}_k^- = [\mathbf{r}_r^T, \mathbf{v}_r^T, \mathbf{B}^T]^T\) is the state vector containing position, velocity, and ambiguities, \(\mathbf{K}_k\) is the Kalman gain, and \(\mathbf{h}(\mathbf{x}_k^-)\) is the measurement prediction. Integer ambiguity resolution is performed using the LAMBDA algorithm with ratio test validation:
+
+\begin{equation}
+R = \frac{\|\mathbf{N}_2 - \hat{\mathbf{N}}\|_{\mathbf{Q}_{\mathbf{N}}^{-1}}^2}{\|\hat{\mathbf{N}} - \hat{\mathbf{N}}_{float}\|_{\mathbf{Q}_{\mathbf{N}}^{-1}}^2} > R_{thres}
+\end{equation}
+
+where \(\mathbf{N}_2\) is the second-best integer candidate, \(\hat{\mathbf{N}}\) is the best integer candidate, \(\hat{\mathbf{N}}_{float}\) is the float ambiguity solution, and \(R_{thres} = 3.0\). RTKPost was configured with BeiDou-only observations (L1+L2 frequencies), 10° elevation mask, instantaneous ambiguity resolution, estimated TEC ionospheric correction, and broadcast ephemeris. The kinematic solution produced fixed integer ambiguities when the ratio test was satisfied, achieving centimeter-level positioning accuracy. Final ECEF coordinates \((x_r, y_r, z_r)\) at each epoch served as reference ground truth for model training.
+
+
+\subsection{Machine Learning Model Training and Testing}
+The overall workflow for model training and testing is illustrated in Figure~\ref{fig:ML workflow}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/2nd_workflow.png}
+    \caption{Model training workflow}
+    \label{fig:ML workflow}
+\end{figure}
+\subsubsection{Data Preparation}
+The datasets used for model development were first extracted, preprocessed, and cleaned prior to training. The extracted variables included \textit{GPST}, \textit{x-ecef (m)}, \textit{y-ecef (m)}, \textit{z-ecef (m)}, \textit{ns}, \textit{sdx (m)}, \textit{sdy (m)}, and \textit{sdz (m)} from the Single Point Positioning (SPP) solution, as well as \textit{GPST}, \textit{x-ecef (m)}, \textit{y-ecef (m)}, and \textit{z-ecef (m)} from the Real-Time Kinematic (RTK) solution. 
+
+Residual components were computed to serve as the model targets using the following relations:
+\begin{equation}
+\Delta x = x_{\text{RTK}} - x_{\text{SPP}}, \quad 
+\Delta y = y_{\text{RTK}} - y_{\text{SPP}}, \quad 
+\Delta z = z_{\text{RTK}} - z_{\text{SPP}}
+\end{equation}
+
+Both datasets were merged based on the \textit{GPST} key. Outliers present in the residual values (\(\Delta x\), \(\Delta y\), \(\Delta z\))—attributable to multipath interference and non-line-of-sight (NLOS) effects—were identified and removed using an anomaly detection algorithm. The resulting cleaned dataset was then used in the training and evaluation phases as shown in Figure~\ref{fig:ML workflow}.
+
+
+\subsubsection{Model Training Setup}
+Multiple machine learning models were developed and fine-tuned to predict the positional residuals (\(\Delta x\), \(\Delta y\), \(\Delta z\)). The architectures evaluated included Random Forest, XGBoost, LightGBM, Artificial Neural Networks (ANN), and a hybrid ensemble approach. Each model was trained under identical experimental conditions to ensure a fair and consistent comparison.
+
+\paragraph{Hyperparameter Tuning via Grid Search}
+To optimize model performance, a systematic hyperparameter tuning procedure was implemented. The complete dataset was divided into training (80\%) and testing (20\%) subsets using a fixed random seed. Input features were standardized using \textit{StandardScaler} to improve convergence stability.
+
+For Random Forest, hyperparameter optimization was performed using \textit{GridSearchCV} with $k$-fold cross-validation. The optimal configuration achieved 200 decision trees, a maximum tree depth of 20, and a minimum of 2 samples per leaf node, evaluated using the coefficient of determination (\(R^2\)). Similar systematic tuning procedures were applied to XGBoost, LightGBM, and ANN models, with the best-performing configuration for each model retained for final evaluation on the independent test set.
+
+
+
+
+
+\subsubsection{Model Evaluation}
+Model performance was quantitatively evaluated using multiple regression metrics applied to the independent test dataset. For each positional component (\(\Delta x\), \(\Delta y\), and \(\Delta z\)), the Root Mean Square Error (RMSE), and coefficient of determination (\(R^2\)) were computed to assess prediction accuracy and model fit. 
+
+To evaluate the model's practical effectiveness in improving positioning accuracy, the three-dimensional Euclidean distance between the SPP and RTK solutions was analyzed before and after applying the machine learning correction. The mean 3D positioning error for the original dataset was computed as:
+\begin{equation}
+e_{\text{original}} = \sqrt{(\Delta x)^2 + (\Delta y)^2 + (\Delta z)^2}
+\end{equation}
+
+Following the correction, the predicted residuals were added to the SPP coordinates to generate adjusted positions, from which the corrected error was recalculated. The relative improvement in positioning accuracy was then determined as:
+\begin{equation}
+\text{Improvement (\%)} = \frac{\bar{e}_{\text{original}} - \bar{e}_{\text{corrected}}}{\bar{e}_{\text{original}}} \times 100
+\end{equation}
+where \(\bar{e}_{\text{original}}\) and \(\bar{e}_{\text{corrected}}\) denote the mean Euclidean errors before and after correction, respectively. This measure provides a holistic indication of the achieved enhancement in 3D positioning precision. All evaluations were conducted under identical experimental conditions to ensure the comparability of results across different models.
+
+
+\section{Experiment and Result}\label{sec:Experiment and Result}
+
+\subsection{Evaluation Metrics}\label{sec:Evaluation Metrics}
+The performance of each model was assessed using a set of standard regression and positioning accuracy metrics, as detailed in Table~\ref{tab:model_evaluation_updated} and Table~\ref{tab:model_improvement_updated}.
+
+\begin{comment}
+
+\subsubsection{Prediction Quality Metrics (Table~\ref{tab:model_evaluation_updated})}
+To evaluate the model's ability to predict the raw error components ($\Delta x, \Delta y, \Delta z$), we use the R-squared (R²) score and the Root Mean Squared Error (RMSE), calculated independently for each axis.
+
+Let $n$ be the number of samples in the test set, $y_i$ be the true error value (e.g., $x_{\text{RTK}} - x_{\text{SPP}}$) for sample $i$, $\hat{y}_i$ be the model's predicted error for that sample, and $\bar{y}$ be the mean of the true error values.
+
+\textbf{Root Mean Squared Error (RMSE)} measures the standard deviation of the prediction residuals (the difference between predicted and true values). A lower RMSE indicates a better fit.
+\begin{equation}\label{equ:rmse}
+	\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+\end{equation}
+
+\textbf{R-squared (R²)} represents the proportion of the variance in the true error that is predictable from the model's features. A score closer to 1 indicates a better model.
+\begin{equation}\label{equ:r2}
+	R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+\end{equation}
+
+\subsubsection{Positional Accuracy Metrics (Table~\ref{tab:model_improvement_updated})}
+To evaluate the real-world positioning accuracy after applying the model's corrections, we analyze the final residual errors. Let the original (baseline) 3D error for each sample $i$ be $d_{i,\text{original}}$, and the final corrected 3D error be $d_{i,\text{corrected}}$.
+
+\textbf{Per-Axis Mean Absolute Error (MAE)} (columns X, Y, Z) quantifies the average magnitude of the residual error on each axis after correction.
+\begin{equation}\label{equ:mae}
+	\text{MAE}_{\text{axis}} = \frac{1}{n} \sum_{i=1}^{n} |y_{i,\text{true}} - \hat{y}_{i,\text{predicted}}|
+\end{equation}
+Where $y_{i,\text{true}}$ is the true position and $\hat{y}_{i,\text{predicted}}$ is the final corrected position on that axis.
+
+\textbf{Total Distance (Mean 3D Error)} is the primary metric for overall accuracy, representing the average 3D Euclidean distance between the final corrected position and the true position.
+\begin{equation}\label{equ:mean_3d_error}
+	\bar{d}_{\text{corrected}} = \frac{1}{n} \sum_{i=1}^{n} d_{i,\text{corrected}}
+\end{equation}
+Where $d_{i,\text{corrected}} = \sqrt{e_{i,x}^2 + e_{i,y}^2 + e_{i,z}^2}$, and $e_{i, \text{axis}}$ is the final residual error on each axis for sample $i$.
+
+\textbf{Improvement (\%)} measures the percentage reduction in mean 3D error achieved by the model compared to the original baseline error ($\bar{d}_{\text{original}} \approx 14.99$ m).
+\begin{equation}\label{equ:improvement}
+	\text{Improvement (\%)} = \left( \frac{\bar{d}_{\text{original}} - \bar{d}_{\text{corrected}}}{\bar{d}_{\text{original}}} \right) \times 100\%
+\end{equation}
+\end{comment}
+\subsection{Comparative Analysis of Model Architectures}\label{sec:5.2 Comparative Analysis of Model Architectures}
+The results reveal a clear performance stratification between tree-based, neural, and hybrid architectures.
+
+\textbf{Tree-Based Models}
+
+The ensemble tree-based models (RandomForest, XGBoost, and LightGBM) constituted the top-performing cluster. The RFR's superior performance (91.49\% improvement) was followed closely by the XGBoost (90.24\%) and LightGBM (90.23\%) models. The nearly identical results of the two gradient-boosted methods suggest they converge to a similar solution for this specific regression task.
+
+\textbf{Neural and Hybrid-Neural Models}
+
+A critical insight is gained by comparing the standalone Neural Network (NN) with the hybrid Hybrid NN. The standalone NN was the clear underperformer in this study, yielding the lowest improvement (86.43\%) and the highest residual error (2.03 m). This suggests that a single NN, with the tested architecture, may be less adept at modeling this specific error-correction function than tree-based methods, or it may be highly sensitive to initialization and hyperparameter tuning.
+
+However, this does not preclude the utility of neural methods. The Hybrid NN Model-a hybrid architecture combining an averaged ensemble of three NNs with an RFR trained on their residuals—achieved a final improvement of 90.08\% (1.49 m error). This performance is highly competitive, placing it alongside the gradient-boosted models.
+
+
+\subsection{Evaluation of Model Correction Performance}\label{sec:5.1 Evaluation of Model Correction Performance}
+
+Five distinct machine learning frameworks were systematically evaluated for their efficacy in 3D error correction. As presented in Table~\ref{tab:model_evaluation_updated}, all models successfully mitigated the substantial baseline positioning error of 15 m Mean 3D Error, demonstrating overall improvements ranging from 86.43\% to 92.29\%. The RandomForestRegressor (RFR) emerged as the superior single-model architecture, achieving the highest overall improvement of 92.29\% and reducing the mean corrected 3D error to 1.15 m. This superior performance is further substantiated by Figure~\ref{fig:Improvement Across Models}, which visualizes the mean Euclidean distance improvement across each AI model, clearly illustrating RFR's dominance in error mitigation.
+
+\begin{table*}[htbp!]
+	\centering
+	\renewcommand{\arraystretch}{1.5}
+	\setlength{\tabcolsep}{10pt}
+	\begin{tabular}{|l|c|c|c|c|c|c|c|}\hline
+		\multirow{2}{*}{Model} & \multicolumn{2}{c|}{Axis X} & \multicolumn{2}{c|}{Axis Y} & \multicolumn{2}{c|}{Axis Z}\\\cline{2-7}
+		& R² & RMSE & R² & RMSE & R² & RMSE\\\hline
+		RandomForest & \textbf{0.7558} & \textbf{0.5952} & \textbf{0.7550} & \textbf{1.7676} & \textbf{0.8571} & \textbf{0.6752}\\
+		XGBoost & 0.5840 & 0.9086 & 0.6713 & 2.1468 & 0.7742 & 0.9157\\
+		LightGBM & 0.6419 & 0.8429 & 0.6660 & 2.1639 & 0.7873 & 0.8888 \\
+		Neural Network & 0.4921 & 1.0038 & 0.5326 & 2.5599 & 0.6648 & 1.1156 \\
+		Hybrid NN & 0.5877 & 0.9044 & 0.6765 & 2.1296 & 0.7754 & 0.9132 \\\hline
+	\end{tabular}
+	\caption{Comparison of Model Evaluation Metrics (R² and RMSE)}
+	\label{tab:model_evaluation_updated}
+\end{table*}
+
+\begin{table*}[h]
+	\centering
+    \renewcommand{\arraystretch}{1.5}
+	\setlength{\tabcolsep}{10pt}
+		\begin{tabular}{|l|c|c|c|c|c|}\hline
+			Model &X (m)& Y (m) & Z (m) & Total Distance (m) & Improvement (\%) \\\hline
+			RandomForest & \textbf{0.36} & \textbf{1.05} & \textbf{0.42} & \textbf{1.15} & \textbf{92.29} \\
+			XGBoost & 0.41 & 1.2 & 0.47 & 1.46& 90.24 \\
+			LightGBM & 0.4 & 1.21 & 0.47 & 1.46& 90.23 \\
+			Neural Network& 0.57 & 1.65 & 0.69 & 2.03 & 86.43 \\
+			Ensemble & 0.43 & 1.2 & 0.49 & 1.49 & 90.08 \\\hline
+		\end{tabular}
+    \caption{Axis-wise mean absolute error and overall Euclidean positioning error averaged over time.}
+	\label{tab:model_improvement_updated}
+\end{table*}
+% Models Mean Error Analysis: this table states the absolute error in each axis separately and the euclidean distance. each one was calculated for each time epoch (every second) and the results are the average over time.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/plotting.png}
+    \caption{Improvement Across Models}
+    \label{fig:Improvement Across Models}
+\end{figure}
+
+\subsection{Analysis of Anisotropic Error Correction}\label{sec:5.3 Analysis of Anisotropic Error Correction}
+
+A consistent trend across all evaluated models was the anisotropic character of the correction performance. Predictability was highest along the Z-axis, where the RFR model yielded optimal results, evidenced by a maximum R² score of \textbf{0.8571\%} and a minimal RMSE of \textbf{0.6752}.
+
+Conversely, the Y-axis was unequivocally the most challenging to model, This is evidenced by consistently minimal R² values and maximal RMSE across all models, reaching up to \textbf{1.7676 m} for the RFR. This indicates that the Y-axis error is the dominant component of the final 3D positioning error. This discrepancy implies that the input features provide less descriptive power for the error dynamics specific to the Y dimension, a phenomenon that warrants further investigation, potentially in feature engineering or sensor fusion.
+
+Furthermore, the feature importance analysis derived from the RFR (Figure~\ref{fig:rf_feature_importance}) demonstrates a distinct hierarchy among the input variables influencing the model’s predictive performance. The standard deviation of the SPP \(z\)-coordinate sdz(m) exhibits the highest importance, accounting for approximately \textbf{45.0\%} of the total contribution—nearly 2.8 times greater than that of the second most influential feature, sdy(m) \textbf{16.0\%}. In contrast, the number of visible satellites ns shows a marginal impact \textbf{1.0\%}, indicating that the correction accuracy depends more on measurement quality than satellite availability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/Feature_importance.png}
+    \caption{Feature importance scores obtained from the RandomForestRegressor model.}
+    \label{fig:rf_feature_importance}
+\end{figure}
+
+\section{Conclusion}
+This study demonstrates that an AI-driven Virtual Reference Station (VRS) framework can effectively bridge the accuracy gap between low-cost SPP and kinematic RTK by training machine learning models to predict residual 3D positional errors ($\Delta x, \Delta y, \Delta z$). The Random Forest Regressor model achieved the best performance, reducing mean 3D error from 15 m to 1.15 m (92.29\% improvement) using only the BeiDou constellation. This result demonstrates that ensemble tree-based methods are well-suited for modeling non-linear GNSS error patterns. By eliminating the need for physical reference stations during deployment, this approach enables cost-effective high-precision GNSS for precision agriculture, UAV navigation, and automated construction applications. Comparative analysis confirms that Random Forest significantly outperforms standalone Artificial Neural Networks for GNSS error correction.\\
+Future research should address key limitations identified in this study. Notably, all models exhibited higher residual errors on the Y-axis, suggesting that the current feature set lacks sufficient descriptive power for modeling errors in that specific axis. Advanced feature engineering incorporating satellite-specific attributes (elevation, azimuth, C/N0) and time-series dynamics may improve Y-axis correction. Additionally, while this work validated the framework using BeiDou exclusively, expansion to multi-GNSS approaches (GPS, Galileo, GLONASS fusion) would enhance robustness and accessibility. Finally, real-world deployment testing on embedded systems is critical to validate computational efficiency and generalization capabilities under challenging conditions (urban canyons, dense foliage) where multipath and NLOS effects are prevalent.
+
+
+\begin{thebibliography}{}
+\bibitem{BisnathSunil}\label{BisnathSunil} 
+Bisnath, S. (2020).Sunil Relative Positioning and Real‐Time Kinematic (RTK). Position, Navigation, and Timing Technologies in the 21st Century: Integrated Satellite Navigation, Sensor Systems, and Civil Applications, 1, 481-502.\href{https://doi.org/10.1002/9781119458449.ch19}{doi.org/10.1002/9781119458449.ch19}
+
+\bibitem{kanhere2022}\label{kanhere2022} 
+Kanhere, A.V., Gupta, S., Shetty, A., Gao, G., 2022. Improving GNSS Positioning using Neural Network-based Corrections. 
+\textit{arXiv preprint} arXiv:2110.09581. 
+Available at: \href{https://arxiv.org/abs/2110.09581}{arxiv.org/abs/2110.09581}.
+
+\bibitem{KaplanHegarty}\label{KaplanHegarty}
+Kaplan, E. D., \& Hegarty, C. (Eds.). (2017). Understanding GPS/GNSS: principles and applications. Artech house.
+
+\bibitem{mohanty2024}\label{mohanty2024} 
+Mohanty, A., Gao, G., 2024. A survey of machine learning techniques for improving Global Navigation Satellite Systems. 
+
+\bibitem{RevnivykhSergey}\label{RevnivykhSergey} 
+Revnivykh, S., Bolkunov, A., Serdyukov, A., \& Montenbruck, O. (2017). Glonass. In Springer Handbook of Global Navigation Satellite Systems (pp. 219-245). Cham: Springer International Publishing.
+
+\textit{EURASIP J. Adv. Signal Process.}, 2024, 73. 
+\href{https://doi.org/10.1186/s13634-024-01167-7}{doi:10.1186/s13634-024-01167-7}.
+
+\bibitem{sbeity2023}\label{sbeity2023} 
+Sbeity, I., Villien, C., Denis, B., Belmega, E.V., 2023. RNN-Based GNSS Positioning using Satellite Measurement Features and Pseudorange Residuals. 
+\textit{arXiv preprint} arXiv:2306.05319. 
+Available at: \href{https://arxiv.org/abs/2306.05319}{arxiv.org/abs/2306.05319}.
+
+\bibitem{SteigenbergerPeter}\label{SteigenbergerPeter}
+Steigenberger, P., \& Montenbruck, O. (2017). Galileo status: orbits, clocks, and positioning. GPS solutions, 21(2), 319-331.
+
+\bibitem{Takasu2020}\label{Takasu2020}
+Takasu, T., and RTKLIB contributors, RTKLIB ver. 2.4.3, 2020. Available online: \href{http://www.rtklib.com/}{http://www.rtklib.com/}
+
+
+\bibitem{tang2024}\label{tang2024} 
+Tang, J., Li, Z., Hou, K., Li, P., Zhao, H., Wang, Q., Liu, M., Xie, S., 2024. Improving GNSS Positioning Correction Using Deep Reinforcement Learning with an Adaptive Reward Augmentation Method. 
+\textit{Navig.}, 71(4). 
+\href{https://doi.org/10.33012/navi.667}{doi:10.33012/navi.667}.
+
+\bibitem{weng2023}\label{weng2023} 
+Weng, Y., Gao, G., 2023. PrNet: A Neural Network for Correcting Pseudoranges to Improve Positioning with Android Raw GNSS Measurements. 
+\textit{arXiv preprint} arXiv:2309.12204. 
+Available at: \href{https://arxiv.org/abs/2309.12204}{arxiv.org/abs/2309.12204}.
+
+\bibitem{kabir2023}\label{kabir2023} 
+Kabir, F., Sharmin, S., Iqbal, A., Sohel, F., 2023. PC-DeepNet: A GNSS Positioning Error Minimization Framework Using Permutation-Invariant Deep Neural Networks. 
+\textit{arXiv preprint} arXiv:2504.13990. 
+Available at: \href{https://arxiv.org/abs/2504.13990}{arxiv.org/abs/2504.13990}.
+
+\bibitem{pan2023}\label{pan2023} 
+Pan, Y., Möller, G., Soja, B., 2023. Machine Learning-Based Multipath Modeling in Spatial Domain Applied to GNSS Short Baseline Processing. 
+\textit{GPS Solut.}, 27(4), 189. 
+\href{https://doi.org/10.1007/s10291-023-01553-y}{doi.org:10.1007/s10291-023-01553-y}.
+
+\bibitem{stopar2024}\label{stopar2024} 
+Stopar, B., Pavlovčič-Prešeren, P., Ambrožič, T., 2024. Observations and Positioning Quality of Low-Cost GNSS Receivers: A Review. 
+\textit{GPS Solut.}, 28(2), 123. 
+\href{https://doi.org/10.1007/s10291-024-01686-8}{doi:10.1007/s10291-024-01686-8}.
+
+\bibitem{TeunissenMontenbruck}\label{TeunissenMontenbruck} 
+(2007). GPS Observation Equations and Equivalence Properties. In: GPS. Springer, Berlin, Heidelberg. \href{https://doi.org/10.1007/978-3-540-72715-6_6}{doi.org/10.1007/978-3-540-72715-6\_6}
+
+\bibitem{Wu2024}\label{Wu2024}
+Wu, F., Wei, L., Luo, H., Zhao, F., Ma, X., \& Ning, B. (2024). T‐SPP: Improving GNSS Single‐Point Positioning Performance Using Transformer‐Based Correction. International Journal of Intelligent Systems, 2024(1), 6643723. \href{https://doi.org/10.1155/2024/6643723}{doi.org/10.1155/2024/6643723}
+
+\bibitem{Yang2019}\label{Yang2019} 
+Yang, Y., Gao, W., Guo, S., Mao, Y., \& Yang, Y. (2019). Introduction to BeiDou‐3 navigation satellite system. Navigation, 66(1), 7-18.
+
+\end{thebibliography}
+
+
+
+\end{document}
+

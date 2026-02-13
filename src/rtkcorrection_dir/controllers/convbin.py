@@ -233,11 +233,11 @@ if __name__ == "__main__":
     
     # Perform conversion (UBX → RINEX 3.02, GPS + GLONASS)
     files = convbin_exe.raw_to_rinex(
-        input_file=r"C:\Users\User\OneDrive\Desktop\Base\KTM13440.23_\KTM13440.23_.sbf",
-        output_dir=r"C:\Users\User\OneDrive\Desktop\new_rinex_out\Vehicle Track 10 Dec\base",
+        input_file=r"F:\zizo\FieldData-20240215T092523Z-001\FieldData\ROVER\Vehicle01\RTK\20240214-041908.UBX",
+        output_dir=r"F:\zizo\FieldData-20240215T092523Z-001\FieldData\ROVER\Vehicle01\RTK\BDS",
         convbin_path=convbin_path,
         rinex_version="3.02",
-        input_format="sbf",
+        input_format="ubx",
         constellations=["GPS","GLO"],  # Test with multiple constellations
         signals=["L1", "L2", "L5"]    # Test with multiple signals
     )
